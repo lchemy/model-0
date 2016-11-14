@@ -3,6 +3,7 @@
 const fs = require("fs"),
 	path = require("path");
 
+copyFile("README.md");
 copyFile(".gitignore");
 copyFile(".npmrc");
 
