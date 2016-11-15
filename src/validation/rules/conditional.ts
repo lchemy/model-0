@@ -11,8 +11,17 @@ export function required(): Rule<Model> {
 }
 
 export function checkIf<M extends Model>(condition: (value: any, model: M) => boolean, rulesInit: Rule<M>[] | Rule<M>, elseRulesInit?: Rule<M>[] | Rule<M>): Rule<M> {
-	let rules: Rule<M>[] = Array.isArray(rulesInit) ? rulesInit : [rulesInit],
-		elseRules: Rule<M>[] | undefined = Array.isArray(elseRulesInit) || elseRulesInit == null ? elseRulesInit : [elseRulesInit];
+	let rules: Rule<M>[] = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
+
+	let elseRules: Rule<M>[] | undefined;
+	if (Array.isArray(elseRulesInit)) {
+		elseRules = elseRulesInit;
+	} else if (elseRulesInit == null) {
+		elseRules = undefined;
+	} else {
+		elseRules = [elseRulesInit];
+	}
+
 	return {
 		name: "checkIf",
 		check: (value: any, model: M) => {
