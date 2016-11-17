@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { RuleCheckFn } from "../../../../src/validation/definitions/rule";
-import { isIn, max, maxDate, maxLength, min, minDate, minLength } from "../../../../src/validation/rules/bounds";
+import { isIn, max, maxDate, maxLength, maxSize, min, minDate, minLength, minSize } from "../../../../src/validation/rules/bounds";
 
 describe("validation rule bounds", () => {
 	describe("min", () => {
@@ -77,16 +77,6 @@ describe("validation rule bounds", () => {
 				}
 			});
 		});
-		it("should check arrays", () => {
-			let check: RuleCheckFn<any> = minLength(2).check;
-			expect(check([1, 2, 3], null)).to.be.null;
-			expect(check([1], null)).to.deep.equal({
-				minlength: {
-					requiredLength: 2,
-					actualLength: 1
-				}
-			});
-		});
 	});
 
 	describe("maxLength", () => {
@@ -100,13 +90,51 @@ describe("validation rule bounds", () => {
 				}
 			});
 		});
+	});
+
+	describe("minSize", () => {
 		it("should check arrays", () => {
-			let check: RuleCheckFn<any> = maxLength(2).check;
+			let check: RuleCheckFn<any> = minSize(2).check;
+			expect(check([1, 2, 3], null)).to.be.null;
+			expect(check([1], null)).to.deep.equal({
+				minSize: {
+					requiredSize: 2,
+					actualSize: 1
+				}
+			});
+		});
+
+		it("should check objects", () => {
+			let check: RuleCheckFn<any> = minSize(2).check;
+			expect(check({ a: 1, b: 2, c: 3 }, null)).to.be.null;
+			expect(check({ a: 1 }, null)).to.deep.equal({
+				minSize: {
+					requiredSize: 2,
+					actualSize: 1
+				}
+			});
+		});
+	});
+
+	describe("maxSize", () => {
+		it("should check arrays", () => {
+			let check: RuleCheckFn<any> = maxSize(2).check;
 			expect(check([1, 2], null)).to.be.null;
 			expect(check([1, 2, 3], null)).to.deep.equal({
-				maxlength: {
-					requiredLength: 2,
-					actualLength: 3
+				maxSize: {
+					requiredSize: 2,
+					actualSize: 3
+				}
+			});
+		});
+
+		it("should check objects", () => {
+			let check: RuleCheckFn<any> = maxSize(2).check;
+			expect(check({ a: 1, b: 2 }, null)).to.be.null;
+			expect(check({ a: 1, b: 2, c: 3 }, null)).to.deep.equal({
+				maxSize: {
+					requiredSize: 2,
+					actualSize: 3
 				}
 			});
 		});

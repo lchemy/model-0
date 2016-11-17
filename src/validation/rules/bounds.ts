@@ -51,7 +51,7 @@ export function maxDate(maxValue: Date): Rule<any> {
 export function minLength(minValue: number): Rule<any> {
 	return {
 		name: "minlength",
-		check: (value: string | any[]) => value.length >= minValue ? null : {
+		check: (value: string) => value.length >= minValue ? null : {
 			minlength: {
 				requiredLength: minValue,
 				actualLength: value.length
@@ -63,11 +63,45 @@ export function minLength(minValue: number): Rule<any> {
 export function maxLength(maxValue: number): Rule<any> {
 	return {
 		name: "maxlength",
-		check: (value: string | any[]) => value.length <= maxValue ? null : {
+		check: (value: string) => value.length <= maxValue ? null : {
 			maxlength: {
 				requiredLength: maxValue,
 				actualLength: value.length
 			}
+		}
+	};
+}
+
+function getSize(value: any[] | { [key: string]: any }): number {
+	return Array.isArray(value) ? value.length : Object.keys(value).length;
+}
+
+export function minSize(minValue: number): Rule<any> {
+	return {
+		name: "minSize",
+		check: (value: any[] | { [key: string]: any }) => {
+			let size: number = getSize(value);
+			return size >= minValue ? null : {
+				minSize: {
+					requiredSize: minValue,
+					actualSize: size
+				}
+			};
+		}
+	};
+}
+
+export function maxSize(maxValue: number): Rule<any> {
+	return {
+		name: "maxSize",
+		check: (value: any[] | { [key: string]: any }) => {
+			let size: number = getSize(value);
+			return size <= maxValue ? null : {
+				maxSize: {
+					requiredSize: maxValue,
+					actualSize: size
+				}
+			};
 		}
 	};
 }
