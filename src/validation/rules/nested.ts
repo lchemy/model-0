@@ -1,10 +1,10 @@
 import { Model } from "../../model";
-import { Rule, RuleCheckResult, checkRules } from "../definitions/rule";
+import { Rule, RuleCheckResult, Rules, checkRules } from "../definitions/rule";
 import { ValidatorRawSchema, ValidatorSchema, normalizeSchema } from "../definitions/schema";
 import { Validator } from "../validator";
 
-export function each(rulesInit: Rule<Model> | Rule<Model>[]): Rule<Model> {
-	let rules: Rule<Model>[] = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
+export function each(rulesInit: Rule<Model> | Rules<Model>): Rule<Model> {
+	let rules: Rules<Model> = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
 
 	return {
 		name: "each",

@@ -9,6 +9,11 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
 		"strictNullChecks": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"alwaysStrict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"noEmit": true,
 		"rootDir": "."
     },

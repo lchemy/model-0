@@ -1,6 +1,6 @@
 {
   "name": "@lchemy/model",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "author": "Jesse Zhang (http://jessezhang.me/)",
   "repository": {
@@ -8,25 +8,31 @@
     "url": "https://github.com/lchemy/model.git"
   },
   "scripts": {
-    "prebuild": "del-cli ./dist && npm run lint && npm run test",
     "build": "tsc -p ./tsconfig.build.json",
-    "postbuild": "node ./scripts/copy-package && node ./scripts/copy-dist-files",
-    "preinstall": "npm prune",
-    "postinstall": "typings install",
+    "clean": "del-cli ./.nyc_output ./coverage ./dist ./test-tmp",
+    "coverage": "nyc --reporter lcov --reporter text --reporter text-summary --exclude \"**/test/**\" --report-dir ./coverage npm run test",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "tslint -c tslint.json --project tsconfig.json -t stylish",
-    "pretest": "tsc -p ./tsconfig.test.json",
-    "test": "mocha --ui bdd --require ./.test-tmp/test/bootstrap ./.test-tmp/test/**/*.spec.js",
-    "posttest": "del-cli ./.test-tmp"
+    "postbuild": "node ./scripts/copy-package && node ./scripts/copy-dist-files",
+    "postinstall": "typings install",
+    "posttest": "del-cli ./test-tmp",
+    "prebuild": "del-cli ./dist && npm run test && npm run lint",
+    "precoverage": "del-cli ./coverage",
+    "preinstall": "npm prune",
+    "pretest": "del-cli ./test-tmp && tsc -p ./tsconfig.test.json",
+    "test": "mocha --ui bdd --require ./test-tmp/test/bootstrap \"./test-tmp/test/**/*.spec.js\""
   },
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
+    "coveralls": "^2.11.15",
     "del-cli": "^0.2.0",
-    "mocha": "^3.1.2",
-    "tslint": "^3.15.1",
-    "typescript": "^2.0.9",
+    "mocha": "^3.2.0",
+    "nyc": "^10.0.0",
+    "tslint": "^4.0.2",
+    "typescript": "^2.2.0-dev.20161203",
     "typings": "^2.0.0"
   }
 }

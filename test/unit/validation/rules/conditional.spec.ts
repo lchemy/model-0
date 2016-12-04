@@ -120,7 +120,7 @@ describe("validation rule conditionals", () => {
 			}, {
 				a: {
 					name: "aFail",
-					check: (value) => {
+					check: () => {
 						return {
 							aFail: true
 						};
@@ -128,7 +128,7 @@ describe("validation rule conditionals", () => {
 				},
 				default: [{
 					name: "defaultFail",
-					check: (value) => {
+					check: () => {
 						return {
 							defaultFail: true
 						};

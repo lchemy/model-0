@@ -9,7 +9,9 @@ export interface Rule<M extends Model> {
 	checkNull?: boolean;
 }
 
-export function checkRules(rules: Rule<Model>[], value: any, model: Model): Promise<RuleCheckResult> {
+export type Rules<M extends Model> = Array<Rule<M>>;
+
+export function checkRules(rules: Rules<Model>, value: any, model: Model): Promise<RuleCheckResult> {
 	let result: RuleCheckResult = null,
 		prev: Promise<any> = Promise.resolve();
 

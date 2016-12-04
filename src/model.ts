@@ -1,5 +1,5 @@
 export abstract class Model {
-	static fromJSON(json: Object): Model {
+	static fromJSON(_: Object): Model {
 		throw new Error("Unimplemented");
 	}
 }

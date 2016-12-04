@@ -1,13 +1,13 @@
 import { Model } from "../../model";
 import { model, object } from "../rules";
 import { Validator } from "../validator";
-import { Rule, isRule } from "./rule";
+import { Rule, Rules, isRule } from "./rule";
 
 export interface ValidatorSchema<M extends Model> {
-	[key: string]: Rule<M>[];
+	[key: string]: Rules<M>;
 }
 
-export type ValidatorRawSchemaValue<M extends Model> = Rule<M> | Rule<M>[] | ValidatorRawSchema<M> | Validator<any>;
+export type ValidatorRawSchemaValue<M extends Model> = Rule<M> | Rules<M> | ValidatorRawSchema<M> | Validator<any>;
 export interface ValidatorRawSchema<M extends Model> {
 	[key: string]: ValidatorRawSchemaValue<M>;
 }
@@ -19,7 +19,7 @@ export function normalizeSchema(schema: ValidatorRawSchema<Model>): ValidatorSch
 	}, {});
 }
 
-function normalizeSchemaValue(value: ValidatorRawSchemaValue<Model>): Rule<Model>[] {
+function normalizeSchemaValue(value: ValidatorRawSchemaValue<Model>): Rules<Model> {
 	if (Array.isArray(value)) {
 		return value.map(normalizeSchemaValueMapper);
 	}
