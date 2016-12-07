@@ -1,12 +1,13 @@
 import { Model } from "../model";
+import { Json } from "./json";
 import { Transformable, TransformableStatic } from "./transformable";
 
-export function get<T>(json: Object, field: string | Array<string | number>, defaultValue: T | null = null): T | null {
+export function get<T>(json: Object, field: string | Array<string | number>, defaultValue: T | undefined = undefined): T | undefined {
 	let path: Array<string | number> = Array.isArray(field) ? field : fieldToPath(field);
 
-	let result: T | undefined | null = path.reduce((memo, piece) => {
+	let result: T | undefined = path.reduce<Object | undefined>((memo, piece) => {
 		return memo != null && typeof memo === "object" ? memo[piece] : undefined;
-	}, json) as T | undefined | null;
+	}, json) as T | undefined;
 
 	if (result === undefined) {
 		return defaultValue;
@@ -18,11 +19,11 @@ function fieldToPath(field: string): string[] {
 	return field.match(/([^\.\[\]]+)/g)!;
 }
 
-export function fromJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, json: J): M;
-export function fromJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, json: J[]): M[];
-export function fromJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, json: J | undefined): M | undefined;
-export function fromJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, json: J[] | undefined): M[] | undefined;
-export function fromJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, json?: J | J[]): M | M[] | undefined {
+export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Json<M>): M;
+export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Array<Json<M>>): M[];
+export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Json<M> | undefined): M | undefined;
+export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Array<Json<M>> | undefined): M[] | undefined;
+export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json?: Json<M> | Array<Json<M>>): M | M[] | undefined {
 	if (json == null) {
 		return undefined;
 	}
@@ -32,19 +33,29 @@ export function fromJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J
 	return modelCtor.fromJSON(json);
 }
 
-export function toJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, model: Transformable<M, J>): J;
-export function toJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, model: Array<Transformable<M, J>>): J[];
-export function toJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, model: Transformable<M, J> | undefined): J | undefined;
-export function toJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, model: Array<Transformable<M, J>> | undefined): J[] | undefined;
-export function toJSON<M extends Model, J>(modelCtor: TransformableStatic<M, J>, model?: Transformable<M, J> | Array<Transformable<M, J>>): J | J[] | undefined {
-	if (Array.isArray(model)) {
-		return model.map((m) => {
-			return toJSON(modelCtor, m);
-		});
+export function toJSON<M extends Transformable<M>>(item: M): Json<M>;
+export function toJSON<M extends Transformable<M>>(item: M[]): Array<Json<M>>;
+export function toJSON<M extends Transformable<M>>(item: M | undefined): Json<M> | undefined;
+export function toJSON<M extends Transformable<M>>(item: M[] | undefined): Array<Json<M>> | undefined;
+export function toJSON<T, J>(item: T): J;
+export function toJSON<T, J>(item: T[]): J[];
+export function toJSON<T, J>(item: T | undefined): J | undefined;
+export function toJSON<T, J>(item: T[] | undefined): J[] | undefined;
+export function toJSON(item: any): any {
+	if (item == null) {
+		return item;
 	}
-
-	if (model == null || !(model instanceof modelCtor)) {
-		return undefined;
+	if (item instanceof Transformable) {
+		return item.toJSON();
 	}
-	return model.toJSON() as J;
+	if (Array.isArray(item)) {
+		return item.map(toJSON);
+	}
+	if (item instanceof Model || (typeof item === "object" && item.constructor === Object)) {
+		return Object.keys(item).reduce((memo, key) => {
+			memo[key] = toJSON<any, any>(item[key]);
+			return memo;
+		}, {});
+	}
+	return item;
 }

@@ -1,10 +1,14 @@
 import { Model } from "../model";
+import { Json } from "./json";
+import { toJSON } from "./utilities";
 
-export interface Transformable<M extends Model, J> {
-	toJSON(this: Transformable<M, J>): J;
+export abstract class Transformable<M extends Transformable<M>> extends Model {
+	toJSON(this: M): Json<M> {
+		return toJSON(this);
+	}
 }
 
-export interface TransformableStatic<M extends Model, J> {
+export interface TransformableStatic<M extends Transformable<M>> {
 	new(): M;
-	fromJSON(json: J): M;
+	fromJSON(json: Json<M>): M;
 }
