@@ -1,6 +1,6 @@
 {
   "name": "@lchemy/model",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "",
   "author": "Jesse Zhang (http://jessezhang.me/)",
   "repository": {
@@ -32,7 +32,7 @@
     "mocha": "^3.2.0",
     "nyc": "^10.0.0",
     "tslint": "^4.0.2",
-    "typescript": "^2.2.0-dev.20161206",
+    "typescript": "^2.1.4",
     "typings": "^2.0.0"
   }
 }

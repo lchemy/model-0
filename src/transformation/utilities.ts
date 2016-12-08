@@ -21,9 +21,9 @@ function fieldToPath(field: string): string[] {
 
 export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Json<M>): M;
 export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Array<Json<M>>): M[];
-export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Json<M> | undefined): M | undefined;
-export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Array<Json<M>> | undefined): M[] | undefined;
-export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json?: Json<M> | Array<Json<M>>): M | M[] | undefined {
+export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Json<M> | undefined | null): M | undefined;
+export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json: Array<Json<M>> | undefined | null): M[] | undefined;
+export function fromJSON<M extends Transformable<M>>(modelCtor: TransformableStatic<M>, json?: Json<M> | Array<Json<M>> | null): M | M[] | undefined {
 	if (json == null) {
 		return undefined;
 	}
@@ -45,15 +45,15 @@ export function toJSON(item: any): any {
 	if (item == null) {
 		return item;
 	}
-	if (item instanceof Transformable) {
-		return item.toJSON();
-	}
 	if (Array.isArray(item)) {
 		return item.map(toJSON);
 	}
 	if (item instanceof Model || (typeof item === "object" && item.constructor === Object)) {
 		return Object.keys(item).reduce((memo, key) => {
-			memo[key] = toJSON<any, any>(item[key]);
+			let value: any | null | undefined = toJSON<any, any>(item[key]);
+			if (value !== undefined) {
+				memo[key] = value;
+			}
 			return memo;
 		}, {});
 	}
