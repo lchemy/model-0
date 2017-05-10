@@ -1,18 +1,21 @@
 import { Rule } from "../definitions/rule";
 
-export function snakeEyes(dice: number = 2, sides: number = 6, target = 1): Rule<any> {
+export function snakeEyes(dice: number = 2, sides: number = 6, target: number = 1): Rule<any> {
 	return {
 		name: "snakeEyes",
 		check: () => {
-			for (let i = 0; i < dice; i++) {
+			const resArr: number[] = [];
+			for (let i: number = 0; i < dice; i++) {
 				let rollVal: number = (Math.random() * sides + 1) | 0;
-				if (rollVal !== 1) {
+				if (rollVal !== target) {
 					return {
 						snakeEyes: {
 							requiredValue: target,
-							actualValue: rollVal
+							actualValue: resArr
 						}
 					};
+				} else {
+					resArr.push(rollVal);
 				}
 			}
 			return null;
