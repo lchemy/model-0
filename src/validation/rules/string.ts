@@ -19,6 +19,12 @@ export function isEmail(): Rule<any> {
 	return isEmailRule;
 }
 
+const alphanumericRegexp: RegExp = /^[a-z0-9]+$/i;
+const isAlphanumericRule: Rule<any> = wrapRegexpCheck("isAlphanumeric", alphanumericRegexp);
+export function isAlphanumeric(): Rule<any> {
+	return isAlphanumericRule;
+}
+
 // TODO: isUrl
 
 // TODO: isUppercase
