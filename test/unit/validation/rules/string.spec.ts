@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { RuleCheckFn } from "../../../../src/validation/definitions/rule";
-import { isEmail, matches } from "../../../../src/validation/rules/string";
+import { isAlphanumeric, isEmail, matches } from "../../../../src/validation/rules/string";
 
 describe("validation rule string", () => {
 	describe("matches", () => {
@@ -27,6 +27,24 @@ describe("validation rule string", () => {
 			});
 			expect(check(0, null)).to.deep.equal({
 				isEmail: true
+			});
+		});
+	});
+
+	describe("isAlphanumeric", () => {
+		it("should check string is alphanumeric", () => {
+			const check: RuleCheckFn<any> = isAlphanumeric().check;
+			expect(check("ok", null)).to.be.null;
+			expect(check("okAY", null)).to.be.null;
+			expect(check("o0123456789k", null)).to.be.null;
+			expect(check("not-okay", null)).to.deep.equal({
+				isAlphanumeric: true
+			});
+			expect(check("not/okay", null)).to.deep.equal({
+				isAlphanumeric: true
+			});
+			expect(check("not@okay", null)).to.deep.equal({
+				isAlphanumeric: true
 			});
 		});
 	});
