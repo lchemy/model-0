@@ -2,10 +2,10 @@ import { Model } from "../model";
 import { Json } from "./json";
 import { Transformable, TransformableStatic } from "./transformable";
 
-export function get<T>(json: Object, field: string | Array<string | number>, defaultValue: T | undefined = undefined): T | undefined {
-	let path: Array<string | number> = Array.isArray(field) ? field : fieldToPath(field);
+export function get<T>(json: object, field: string | Array<string | number>, defaultValue?: T): T | undefined {
+	const path: Array<string | number> = Array.isArray(field) ? field : fieldToPath(field);
 
-	let result: T | undefined = path.reduce<Object | undefined>((memo, piece) => {
+	const result: T | undefined = path.reduce<object | undefined>((memo, piece) => {
 		return memo != null && typeof memo === "object" ? memo[piece] : undefined;
 	}, json) as T | undefined;
 
@@ -50,7 +50,7 @@ export function toJSON(item: any): any {
 	}
 	if (item instanceof Model || (typeof item === "object" && item.constructor === Object)) {
 		return Object.keys(item).reduce((memo, key) => {
-			let value: any | null | undefined = toJSON<any, any>(item[key]);
+			const value: any | null | undefined = toJSON<any, any>(item[key]);
 			if (value !== undefined) {
 				memo[key] = value;
 			}

@@ -5,7 +5,7 @@ import { Rules, checkRules } from "../../../../src/validation/definitions/rule";
 describe("validation rule definition", () => {
 	describe("checkRules", () => {
 		it("should run serially and merge results", () => {
-			let rules: Rules<any> = [{
+			const rules: Rules<any> = [{
 				name: "error1",
 				check: (value) => value >= 10 ? null : { error: 1 }
 			}, {
@@ -55,7 +55,7 @@ describe("validation rule definition", () => {
 			});
 		});
 		it("should handle checkNull", () => {
-			let rules: Rules<any> = [{
+			const rules: Rules<any> = [{
 				name: "error1",
 				check: (value) => {
 					if (value == null) {

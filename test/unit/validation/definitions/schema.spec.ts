@@ -6,7 +6,7 @@ import { Validator } from "../../../../src/validation/validator";
 describe("validation schema", () => {
 	describe("normalizeSchema", () => {
 		it("should handle rule objects", () => {
-			let schema: ValidatorSchema<any> = normalizeSchema({
+			const schema: ValidatorSchema<any> = normalizeSchema({
 				a: {
 					name: "a",
 					check: () => null
@@ -15,7 +15,7 @@ describe("validation schema", () => {
 			expect((schema as any).a).to.be.instanceof(Array);
 		});
 		it("should handle rule arrays", () => {
-			let schema: ValidatorSchema<any> = normalizeSchema({
+			const schema: ValidatorSchema<any> = normalizeSchema({
 				a: [{
 					name: "a",
 					check: () => null
@@ -24,7 +24,7 @@ describe("validation schema", () => {
 			expect((schema as any).a).to.be.instanceof(Array);
 		});
 		it("should handle nested schemas", () => {
-			let schema: ValidatorSchema<any> = normalizeSchema({
+			const schema: ValidatorSchema<any> = normalizeSchema({
 				a: {
 					b: {
 						name: "b",
@@ -36,13 +36,13 @@ describe("validation schema", () => {
 			expect((schema as any).a[0].name).to.equal("object");
 		});
 		it("should handle nested validators", () => {
-			let validator: Validator<any> = new Validator({
+			const validator: Validator<any> = new Validator({
 				b: {
 					name: "b",
 					check: () => null
 				}
 			});
-			let schema: ValidatorSchema<any> = normalizeSchema({
+			const schema: ValidatorSchema<any> = normalizeSchema({
 				a: validator
 			});
 			expect((schema as any).a).to.be.instanceof(Array);

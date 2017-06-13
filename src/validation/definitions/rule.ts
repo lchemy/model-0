@@ -26,6 +26,7 @@ export function checkRules(rules: Rules<Model>, value: any, model: Model): Promi
 			if (ruleResult == null) {
 				return;
 			}
+			// tslint:disable-next-line:prefer-object-spread
 			result = Object.assign(result || {}, ruleResult);
 		});
 	});

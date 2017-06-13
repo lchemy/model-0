@@ -1,6 +1,6 @@
 {
   "name": "@lchemy/model",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "",
   "author": "Jesse Zhang (http://jessezhang.me/)",
   "repository": {
@@ -12,9 +12,10 @@
     "clean": "del-cli ./.nyc_output ./coverage ./dist ./test-tmp",
     "coverage": "nyc --reporter lcov --reporter text --reporter text-summary --exclude \"**/test/**\" --report-dir ./coverage npm run test",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "lint": "tslint -c tslint.json --project tsconfig.json -t stylish",
+    "lint": "npm run lint:src && npm run lint:test",
+    "lint:src": "tslint -c tslint.json --project tsconfig.json -e \"./test/**\" -t stylish --type-check",
+    "lint:test": "tslint -c ./test/tslint.json --project tsconfig.json -e \"./src/**\" -t stylish --type-check",
     "postbuild": "node ./scripts/copy-package && node ./scripts/copy-dist-files",
-    "postinstall": "typings install",
     "posttest": "del-cli ./test-tmp",
     "prebuild": "del-cli ./dist && npm run test && npm run lint",
     "precoverage": "del-cli ./coverage",
@@ -25,14 +26,16 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
-    "coveralls": "^2.11.15",
-    "del-cli": "^0.2.0",
-    "mocha": "^3.2.0",
-    "nyc": "^10.0.0",
-    "tslint": "^4.0.2",
-    "typescript": "^2.1.4",
-    "typings": "^2.0.0"
+    "@types/chai": "^4.0.0",
+    "@types/chai-as-promised": "0.0.31",
+    "@types/mocha": "^2.2.41",
+    "chai": "^4.0.2",
+    "chai-as-promised": "^7.0.0",
+    "coveralls": "^2.13.1",
+    "del-cli": "^1.0.0",
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.2",
+    "tslint": "^5.4.3",
+    "typescript": "^2.3.4"
   }
 }

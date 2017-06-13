@@ -7,7 +7,7 @@ import { Validator } from "../../../../src/validation/validator";
 describe("validation rule nested", () => {
 	describe("each", () => {
 		it("should check arrays", () => {
-			let check: RuleCheckFn<any> = each({
+			const check: RuleCheckFn<any> = each({
 				name: "atLeast10",
 				check: (value: any) => value >= 10 ? null : { atLeast10: true }
 			}).check;
@@ -20,7 +20,7 @@ describe("validation rule nested", () => {
 
 				// the array values aren't undefined, they're empty
 				// need to define it like this for deep equal
-				let nested: any[] = [];
+				const nested: any[] = [];
 				nested[1] = {
 					atLeast10: true
 				};
@@ -34,7 +34,7 @@ describe("validation rule nested", () => {
 			});
 		});
 		it("should check objects", () => {
-			let check: RuleCheckFn<any> = each([{
+			const check: RuleCheckFn<any> = each([{
 				name: "atLeast10",
 				check: (value: any) => value >= 10 ? null : { atLeast10: true }
 			}]).check;
@@ -71,15 +71,15 @@ describe("validation rule nested", () => {
 
 	describe("object", () => {
 		it("should check objects", () => {
-			let atLeast10: Rule<any> = {
+			const atLeast10: Rule<any> = {
 				name: "atLeast10",
 				check: (value: any) => value >= 10 ? null : { atLeast10: true }
 			};
-			let atMost10: Rule<any> = {
+			const atMost10: Rule<any> = {
 				name: "atMost10",
 				check: (value: any) => value <= 10 ? null : { atMost10: true }
 			};
-			let check: RuleCheckFn<any> = object({
+			const check: RuleCheckFn<any> = object({
 				a: atLeast10,
 				b: atMost10,
 				c: [atLeast10],
@@ -121,15 +121,15 @@ describe("validation rule nested", () => {
 
 	describe("model", () => {
 		it("should check models with validator", () => {
-			let atLeast10: Rule<any> = {
+			const atLeast10: Rule<any> = {
 				name: "atLeast10",
 				check: (value: any) => value >= 10 ? null : { atLeast10: true }
 			};
-			let validator: Validator<any> = new Validator<any>({
+			const validator: Validator<any> = new Validator<any>({
 				a: atLeast10,
 				b: [atLeast10]
 			});
-			let check: RuleCheckFn<any> = model(validator).check;
+			const check: RuleCheckFn<any> = model(validator).check;
 
 			return Promise.all([
 				check({
@@ -153,15 +153,15 @@ describe("validation rule nested", () => {
 			});
 		});
 		it("should check models with validator ref", () => {
-			let atLeast10: Rule<any> = {
+			const atLeast10: Rule<any> = {
 				name: "atLeast10",
 				check: (value: any) => value >= 10 ? null : { atLeast10: true }
 			};
-			let validator: Validator<any> = new Validator<any>({
+			const validator: Validator<any> = new Validator<any>({
 				a: atLeast10,
 				b: [atLeast10]
 			});
-			let check: RuleCheckFn<any> = model(() => validator).check;
+			const check: RuleCheckFn<any> = model(() => validator).check;
 
 			return Promise.all([
 				check({
@@ -185,11 +185,11 @@ describe("validation rule nested", () => {
 			});
 		});
 		it("should check models with validator schema", () => {
-			let atLeast10: Rule<any> = {
+			const atLeast10: Rule<any> = {
 				name: "atLeast10",
 				check: (value: any) => value >= 10 ? null : { atLeast10: true }
 			};
-			let check: RuleCheckFn<any> = model({
+			const check: RuleCheckFn<any> = model({
 				a: atLeast10,
 				b: [atLeast10]
 			}).check;
@@ -216,16 +216,16 @@ describe("validation rule nested", () => {
 			});
 		});
 		it("should check models with partial keys", () => {
-			let atLeast10: Rule<any> = {
+			const atLeast10: Rule<any> = {
 				name: "atLeast10",
 				check: (value: any) => value >= 10 ? null : { atLeast10: true }
 			};
-			let validator: Validator<any> = new Validator<any>({
+			const validator: Validator<any> = new Validator<any>({
 				a: atLeast10,
 				b: [atLeast10],
 				c: atLeast10
 			});
-			let check: RuleCheckFn<any> = model(validator, ["a", "b"]).check;
+			const check: RuleCheckFn<any> = model(validator, ["a", "b"]).check;
 
 			return Promise.all([
 				check({
@@ -251,7 +251,7 @@ describe("validation rule nested", () => {
 			});
 		});
 		it("should throw error for invalid deref", () => {
-			let check: RuleCheckFn<any> = model(Number.NaN as any).check;
+			const check: RuleCheckFn<any> = model(Number.NaN as any).check;
 			expect(() => {
 				check(null, null);
 			}).to.throw("Invalid validator reference");

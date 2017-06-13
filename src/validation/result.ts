@@ -12,21 +12,21 @@ export class ValidationResult {
 	}
 
 	get(field: string): ValidationResult | undefined {
-		let path: string[] = fieldToPath(field);
+		const path: string[] = fieldToPath(field);
 
 		field = path.join("."); // normalize field for cache hit check
 		if (this.cache.has(field)) {
 			return this.cache.get(field);
 		}
 
-		let pathExists: boolean = checkPathExists(this.value, path);
+		const pathExists: boolean = checkPathExists(this.value, path);
 		if (this.isValid) {
 			return pathExists ? VALID_RESULT : undefined;
 		} else if (!pathExists) {
 			return undefined;
 		}
 
-		let result: RuleCheckResult = getResultAtPath(this.errors, path),
+		const result: RuleCheckResult = getResultAtPath(this.errors, path),
 			value: any = getValueAtPath(this.value, path),
 			out: ValidationResult = new ValidationResult(result, value);
 		this.cache.set(field, out);
@@ -45,7 +45,7 @@ function checkPathExists(piece: any, path: string[]): boolean {
 		return false;
 	}
 
-	let l: number = path.length;
+	const l: number = path.length;
 	return path.every((part, i) => {
 		piece = piece[part];
 		return i === l - 1 || (piece != null && typeof piece === "object");

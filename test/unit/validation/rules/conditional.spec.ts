@@ -6,7 +6,7 @@ import { checkIf, checkSwitch, required } from "../../../../src/validation/rules
 describe("validation rule conditionals", () => {
 	describe("required", () => {
 		it("should check if not null", () => {
-			let check: RuleCheckFn<any> = required().check;
+			const check: RuleCheckFn<any> = required().check;
 
 			expect(check("non-null", null)).to.be.null;
 			expect(check(null, null)).to.deep.equal({
@@ -16,7 +16,7 @@ describe("validation rule conditionals", () => {
 	});
 	describe("checkIf", () => {
 		it("should check rules only if condition is matched", () => {
-			let check: RuleCheckFn<any> = checkIf((value) => {
+			const check: RuleCheckFn<any> = checkIf((value) => {
 				return value < "g";
 			}, [{
 				name: "fail",
@@ -38,7 +38,7 @@ describe("validation rule conditionals", () => {
 			});
 		});
 		it("should check elseRules only if condition is not matched", () => {
-			let check: RuleCheckFn<any> = checkIf((value) => {
+			const check: RuleCheckFn<any> = checkIf((value) => {
 				return value < "g";
 			}, [{
 				name: "fail",
@@ -74,7 +74,7 @@ describe("validation rule conditionals", () => {
 			});
 		});
 		it("should check handle single rule definition", () => {
-			let check: RuleCheckFn<any> = checkIf((value) => {
+			const check: RuleCheckFn<any> = checkIf((value) => {
 				return value < "g";
 			}, {
 				name: "fail",
@@ -108,7 +108,7 @@ describe("validation rule conditionals", () => {
 
 	describe("checkSwitch", () => {
 		it("should check only if mapped to a branch", () => {
-			let check: RuleCheckFn<any> = checkSwitch((value) => {
+			const check: RuleCheckFn<any> = checkSwitch((value) => {
 				switch (value) {
 					case 1:
 						return "a";

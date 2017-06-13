@@ -80,7 +80,7 @@ export function minSize(minValue: number): Rule<any> {
 	return {
 		name: "minSize",
 		check: (value: any[] | { [key: string]: any }) => {
-			let size: number = getSize(value);
+			const size: number = getSize(value);
 			return size >= minValue ? null : {
 				minSize: {
 					requiredSize: minValue,
@@ -95,7 +95,7 @@ export function maxSize(maxValue: number): Rule<any> {
 	return {
 		name: "maxSize",
 		check: (value: any[] | { [key: string]: any }) => {
-			let size: number = getSize(value);
+			const size: number = getSize(value);
 			return size <= maxValue ? null : {
 				maxSize: {
 					requiredSize: maxValue,

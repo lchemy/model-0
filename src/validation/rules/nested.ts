@@ -4,16 +4,16 @@ import { ValidatorRawSchema, ValidatorSchema, normalizeSchema } from "../definit
 import { Validator } from "../validator";
 
 export function each(rulesInit: Rule<Model> | Rules<Model>): Rule<Model> {
-	let rules: Rules<Model> = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
+	const rules: Rules<Model> = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
 
 	return {
 		name: "each",
 		check: (values: any[] | { [key: string]: any }, model: Model) => {
-			let result: RuleCheckResult[] = [],
-				isValid: boolean = true,
-				prev: Promise<any> = Promise.resolve();
+			const result: RuleCheckResult[] = [],
+				isObject: boolean = !Array.isArray(values);
 
-			let isObject: boolean = !Array.isArray(values),
+			let isValid: boolean = true,
+				prev: Promise<any> = Promise.resolve(),
 				keys: string[] | undefined;
 
 			if (isObject) {
@@ -60,7 +60,7 @@ export function each(rulesInit: Rule<Model> | Rules<Model>): Rule<Model> {
 }
 
 export function object(rawSchema: ValidatorRawSchema<Model>): Rule<Model> {
-	let schema: ValidatorSchema<Model> = normalizeSchema(rawSchema);
+	const schema: ValidatorSchema<Model> = normalizeSchema(rawSchema);
 
 	return {
 		name: "object",
@@ -103,8 +103,9 @@ export function model<M extends Model>(validatorRef: ValidatorRef<M>, keys?: str
 }
 
 function checkSchema(schema: ValidatorSchema<Model>, value: { [key: string]: any }, model: Model): Promise<RuleCheckResult> {
-	let nested: { [key: string]: RuleCheckResult } = {},
-		isValid: boolean = true,
+	const nested: { [key: string]: RuleCheckResult } = {};
+
+	let isValid: boolean = true,
 		prev: Promise<any> = Promise.resolve();
 
 	Object.keys(schema).forEach((key) => {

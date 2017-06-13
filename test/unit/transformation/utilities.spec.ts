@@ -4,7 +4,7 @@ import { Json, Transformable, fromJSON, get, toJSON } from "../../../src/transfo
 
 describe("transformable utilities", () => {
 	it("should deep get", () => {
-		let obj: any = {
+		const obj: any = {
 			a: [{
 				b: {
 					c: [{
@@ -23,7 +23,7 @@ describe("transformable utilities", () => {
 	});
 
 	it("should use default if deep get fails to find anything", () => {
-		let obj: any = {
+		const obj: any = {
 			a: [{
 				b: {
 					c: [{
@@ -56,7 +56,7 @@ describe("transformable utilities", () => {
 			a: number;
 			b?: number;
 		}
-		let test: Test = new Test();
+		const test: Test = new Test();
 		test.a = 1;
 		expect(toJSON(test)).to.deep.eq({
 			a: 1
@@ -70,7 +70,7 @@ describe("transformable utilities", () => {
 	it("should transform from json", () => {
 		class Test extends Transformable<Test> {
 			static fromJSON(json: Json<Test>): Test {
-				let model: Test = new Test();
+				const model: Test = new Test();
 				model.a = json.a!;
 				model.b = json.b!;
 				return model;
@@ -83,7 +83,7 @@ describe("transformable utilities", () => {
 		expect(fromJSON(Test, null)).to.be.undefined;
 		expect(fromJSON(Test, undefined)).to.be.undefined;
 
-		let model: Test = fromJSON(Test, {
+		const model: Test = fromJSON(Test, {
 			a: 1
 		});
 		expect(model).to.be.instanceof(Test);
@@ -94,7 +94,7 @@ describe("transformable utilities", () => {
 			a: 1
 		});
 
-		let models: Test[] = fromJSON(Test, [{
+		const models: Test[] = fromJSON(Test, [{
 			a: 2,
 			b: 1
 		}, {

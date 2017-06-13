@@ -11,7 +11,7 @@ export function required(): Rule<Model> {
 }
 
 export function checkIf<M extends Model>(condition: (value: any, model: M) => boolean, rulesInit: Rules<M> | Rule<M>, elseRulesInit?: Rules<M> | Rule<M>): Rule<M> {
-	let rules: Rules<M> = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
+	const rules: Rules<M> = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
 
 	let elseRules: Rules<M> | undefined;
 	if (Array.isArray(elseRulesInit)) {
@@ -38,13 +38,13 @@ export function checkSwitch<M extends Model>(mapper: (value: any, model: M) => s
 	return {
 		name: "checkSwitch",
 		check: (value: any, model: M) => {
-			let branch: string = mapper(value, model),
+			const branch: string = mapper(value, model),
 				rulesInit: Rules<M> | Rule<M> | undefined = ruleSet[branch];
 			if (rulesInit == null) {
 				return null;
 			}
 
-			let rules: Rules<M> = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
+			const rules: Rules<M> = Array.isArray(rulesInit) ? rulesInit : [rulesInit];
 			return checkRules(rules, value, model);
 		},
 		checkNull: true

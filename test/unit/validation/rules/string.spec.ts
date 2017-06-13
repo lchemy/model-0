@@ -6,8 +6,8 @@ import { isEmail, matches } from "../../../../src/validation/rules/string";
 describe("validation rule string", () => {
 	describe("matches", () => {
 		it("should check string for pattern", () => {
-			let regexp: RegExp = /^abc/i;
-			let check: RuleCheckFn<any> = matches(regexp).check;
+			const regexp: RegExp = /^abc/i,
+				check: RuleCheckFn<any> = matches(regexp).check;
 			expect(check("abc", null)).to.be.null;
 			expect(check(0, null)).to.deep.equal({
 				matches: {
@@ -20,7 +20,7 @@ describe("validation rule string", () => {
 
 	describe("isEmail", () => {
 		it("should check string", () => {
-			let check: RuleCheckFn<any> = isEmail().check;
+			const check: RuleCheckFn<any> = isEmail().check;
 			expect(check("a@a.com", null)).to.be.null;
 			expect(check("not-an.email", null)).to.deep.equal({
 				isEmail: true

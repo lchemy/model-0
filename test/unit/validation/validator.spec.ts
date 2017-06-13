@@ -5,7 +5,7 @@ import { Validator } from "../../../src/validation/validator";
 
 describe("validation validator", () => {
 	it("should validate", () => {
-		let personValidator: Validator<any> = new Validator({
+		const personValidator: Validator<any> = new Validator({
 			id: [
 				rules.isNumber()
 			],
