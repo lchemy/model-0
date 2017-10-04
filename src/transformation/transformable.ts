@@ -3,7 +3,7 @@ import { Json } from "./json";
 import { toJSON } from "./utilities";
 
 export abstract class Transformable<M extends Transformable<M>> extends Model {
-	static fromJSON<M extends Transformable<M>>(_: Json<M>): M {
+	static fromJSON(_: Json<any>): any {
 		throw new Error("Unimplemented");
 	}
 
